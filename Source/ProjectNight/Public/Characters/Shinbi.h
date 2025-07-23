@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "InputActionValue.h"
 #include "GameFramework/Character.h"
+#include "Characters/CharacterStates.h"
 #include "Shinbi.generated.h"
 
 class UCameraComponent;
@@ -39,24 +40,28 @@ protected:
 	UInputAction* MoveAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
-	UInputAction* LookAction;
-
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* JumpAction;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input)
 	UInputAction* AttackAction;
 
+	/**
+	 * Enhanced Input Action Functions
+	 */
 	void Move(const FInputActionValue& Value);
-	void Look(const FInputActionValue& Value);
 	virtual void Jump() override;
 	void Attack();
 	
 private:
+	EMovementState MovementState = EMovementState::EMS_Idle;
+	
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* CameraBoom;
 
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* Camera;
+
+public:
+	FORCEINLINE EMovementState GetMovementState() const {return MovementState;}
 	
 };
