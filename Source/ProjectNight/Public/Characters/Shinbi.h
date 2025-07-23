@@ -60,23 +60,30 @@ protected:
 	UFUNCTION(BlueprintCallable)
 	void AttackEnd();
 	
-	
 private:
+	/**
+	 * Enum States
+	 */
 	EMovementState MovementState = EMovementState::EMS_Idle;
 
 	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
 	EActionState ActionState = EActionState::EAS_Unoccupied;
-	
+
+	/**
+	 * Components
+	 */
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* CameraBoom;
 
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* Camera;
 
+	/**
+	 * Animation Montages
+	 */
 	UPROPERTY(EditDefaultsOnly, Category = Montages)
 	UAnimMontage* AttackMontage1;
 
 public:
 	FORCEINLINE EMovementState GetMovementState() const {return MovementState;}
-	
 };

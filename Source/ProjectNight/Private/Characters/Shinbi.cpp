@@ -83,6 +83,7 @@ void AShinbi::Jump()
 
 void AShinbi::Attack()
 {
+	// If character can attack, play the Attack Montage and change the Action State to Attacking
 	if (CanAttack())
 	{
 		PlayAttackMontage();
@@ -92,6 +93,7 @@ void AShinbi::Attack()
 
 void AShinbi::PlayAttackMontage()
 {
+	// If Attack Montage 1 is assigned in engine and the AnimInstance exists, play the montage
 	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
 	if (AttackMontage1 && AnimInstance)
 	{
@@ -99,11 +101,13 @@ void AShinbi::PlayAttackMontage()
 	}
 }
 
+// Returns true if the character particularly doing nothing
 bool AShinbi::CanAttack()
 {
 	return ActionState == EActionState::EAS_Unoccupied;
 }
 
+// Called from ABP_Shinbi, when attack montage ends
 void AShinbi::AttackEnd()
 {
 	ActionState = EActionState::EAS_Unoccupied;
