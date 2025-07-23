@@ -14,6 +14,8 @@ class USpringArmComponent;
 class UInputMappingContext;
 class UInputAction;
 
+class UAnimMontage;
+
 UCLASS()
 class PROJECTNIGHT_API AShinbi : public ACharacter
 {
@@ -51,15 +53,28 @@ protected:
 	void Move(const FInputActionValue& Value);
 	virtual void Jump() override;
 	void Attack();
+
+	void PlayAttackMontage();
+	bool CanAttack();
+
+	UFUNCTION(BlueprintCallable)
+	void AttackEnd();
+	
 	
 private:
 	EMovementState MovementState = EMovementState::EMS_Idle;
+
+	UPROPERTY(BlueprintReadWrite, meta = (AllowPrivateAccess = "true"))
+	EActionState ActionState = EActionState::EAS_Unoccupied;
 	
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* CameraBoom;
 
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* Camera;
+
+	UPROPERTY(EditDefaultsOnly, Category = Montages)
+	UAnimMontage* AttackMontage1;
 
 public:
 	FORCEINLINE EMovementState GetMovementState() const {return MovementState;}

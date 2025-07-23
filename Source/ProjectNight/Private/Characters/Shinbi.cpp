@@ -10,6 +10,8 @@
 #include "EnhancedInputSubsystems.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
+#include "Animation/AnimMontage.h"
+
 // Sets default values
 AShinbi::AShinbi()
 {
@@ -54,7 +56,7 @@ void AShinbi::BeginPlay()
 void AShinbi::Move(const FInputActionValue& Value)
 {
 	// Checking if the controller is not null
-	if (Controller)
+	if (ActionState == EActionState::EAS_Unoccupied && Controller)
 	{
 		// Getting the Action Value as Vector2d
 		const FVector2d MovementVector = Value.Get<FVector2d>();
@@ -81,6 +83,30 @@ void AShinbi::Jump()
 
 void AShinbi::Attack()
 {
+	if (CanAttack())
+	{
+		PlayAttackMontage();
+		ActionState = EActionState::EAS_Attacking;
+	}
+}
+
+void AShinbi::PlayAttackMontage()
+{
+	UAnimInstance* AnimInstance = GetMesh()->GetAnimInstance();
+	if (AttackMontage1 && AnimInstance)
+	{
+		AnimInstance->Montage_Play(AttackMontage1);
+	}
+}
+
+bool AShinbi::CanAttack()
+{
+	return ActionState == EActionState::EAS_Unoccupied;
+}
+
+void AShinbi::AttackEnd()
+{
+	ActionState = EActionState::EAS_Unoccupied;
 }
 
 void AShinbi::Tick(float DeltaTime)
